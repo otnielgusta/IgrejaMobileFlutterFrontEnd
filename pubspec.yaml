@@ -56,9 +56,16 @@ flutter:
     
     - assets/images/check.gif
     - assets/images/error.gif
+    - assets/images/check1.json
+    - assets/images/check2.json
+    - assets/images/error.json
     - assets/images/entrada.json
     - assets/images/saida.json
     - assets/images/relatorio.json
+    - assets/images/mensal.json
+    - assets/images/anual.json
+    - assets/database/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

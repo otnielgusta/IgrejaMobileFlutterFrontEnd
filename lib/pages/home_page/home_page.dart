@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterigreja/pages/AdicionarEntradasPage/adicionar_entradas_page.dart';
 import 'package:flutterigreja/pages/AdicionarSaidasPage/adicionar_saidas_page.dart';
+import 'package:flutterigreja/pages/Relatorios/relatorios_page.dart';
 import 'package:flutterigreja/pages/home_page/widgets/home_page_options_widget.dart';
 import 'package:lottie/lottie.dart';
 
@@ -38,6 +39,7 @@ class HomePage extends StatelessWidget {
             HomePageOptionsWidget(
               text: "Relatorios",
               url: "assets/images/relatorio.json",
+              rota: Relatorios(),
             ),
           ],
         ),

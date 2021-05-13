@@ -9,6 +9,7 @@ import 'package:flutterigreja/models/adicionar_entrada_model.dart';
 import 'package:flutterigreja/models/descricao_adicionar_entradas_model.dart';
 import 'package:flutterigreja/models/descricao_entrada_model.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../options_entrada.dart';
 
@@ -37,9 +38,9 @@ class _AdicionarEntradasState extends State<AdicionarEntradas> {
   var valorController = new MoneyMaskedTextController(
       decimalSeparator: '.', thousandSeparator: '');
 
-  String _iconeCheck = "assets/images/check.gif";
+  String _iconeCheck = "assets/images/check2.json";
 
-  String _iconeError = "assets/images/error.gif";
+  String _iconeError = "assets/images/error.json";
 
   @override
   void initState() {
@@ -101,7 +102,6 @@ class _AdicionarEntradasState extends State<AdicionarEntradas> {
               onChanged: (value) {
                 setState(() {
                   valorController.text = maskController.value.text;
-                  print(valorController.text);
                 });
               },
               keyboardType: TextInputType.number,
@@ -139,8 +139,6 @@ class _AdicionarEntradasState extends State<AdicionarEntradas> {
                   setState(() {
                     _dateTime = value;
                     dataController.text = f.format(_dateTime).toString();
-
-                    print(dataController.text);
                   });
                 });
               },
@@ -202,9 +200,9 @@ class _AdicionarEntradasState extends State<AdicionarEntradas> {
     setState(() {
       if (entradaController.state == AdicionarEntradaState.success) {
         if (entradaController.status == 201) {
-          showAlertDialog(context, "Entrada Inserida", _iconeCheck);
+          showAlertDialog(context: context, icone: _iconeCheck);
         } else {
-          showAlertDialog(context, "Entrada não inserida", _iconeError);
+          showAlertDialog(context: context, icone: _iconeError);
         }
       }
       maskController.updateValue(0);
@@ -242,7 +240,6 @@ class _AdicionarEntradasState extends State<AdicionarEntradas> {
               onChanged: (DescricaoEntrada value) {
                 setState(() {
                   selectedItem = value;
-                  print(selectedItem.nomeDescricaoEntrada);
                 });
               },
             ),
@@ -284,26 +281,19 @@ class _AdicionarEntradasState extends State<AdicionarEntradas> {
     }
   }
 
-  showAlertDialog(@required BuildContext context, @required String text,
-      @required String icone) {
+  showAlertDialog({@required BuildContext context, @required String icone}) {
     // set up the button
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-        title: Center(
-            child: Text(
-          text,
-          style: TextStyle(fontSize: 26),
-        )),
-        content: Image.asset(
-          icone,
-        ));
+      content: Lottie.asset(icone),
+    );
 
     // show the dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        Future.delayed(Duration(seconds: 2), () {
+        Future.delayed(Duration(seconds: 1, microseconds: 500), () {
           Navigator.of(context).pop(true);
         });
         return alert;

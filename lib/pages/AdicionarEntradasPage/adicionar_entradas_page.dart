@@ -8,6 +8,7 @@ import 'package:flutterigreja/controllers/states/descricao_entrada_state.dart';
 import 'package:flutterigreja/models/adicionar_entrada_model.dart';
 import 'package:flutterigreja/models/descricao_adicionar_entradas_model.dart';
 import 'package:flutterigreja/models/descricao_entrada_model.dart';
+import 'package:flutterigreja/pages/Editar/editar_page.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
@@ -57,7 +58,10 @@ class _AdicionarEntradasState extends State<AdicionarEntradas> {
   }
 
   void choiceAction(String choice) {
-    print("trabalhando");
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (builder) => EditarPage()),
+    );
   }
 
   @override

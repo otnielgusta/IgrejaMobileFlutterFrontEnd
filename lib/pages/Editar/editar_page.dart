@@ -7,6 +7,7 @@ import 'package:flutterigreja/controllers/states/descricao_entrada_state.dart';
 import 'package:flutterigreja/controllers/states/editar_entrada_state.dart';
 import 'package:flutterigreja/models/adicionar_entrada_model.dart';
 import 'package:flutterigreja/models/descricao_entrada_model.dart';
+import 'package:flutterigreja/pages/Editar/editar_entrada_dados_page.dart';
 import 'package:intl/intl.dart';
 
 import '../../options_entrada.dart';
@@ -31,6 +32,7 @@ class _EditarPageState extends State<EditarPage> {
   AdicionarEntradaModel entradaModel = new AdicionarEntradaModel();
 
   final f = DateFormat("dd/MM/yyyy");
+  final f2 = DateFormat("yyyy-MM-dd");
   var maskController = new MoneyMaskedTextController(leftSymbol: "R\$ ");
   var valorController = new MoneyMaskedTextController(
       decimalSeparator: '.', thousandSeparator: '');
@@ -97,12 +99,6 @@ class _EditarPageState extends State<EditarPage> {
                     onChanged: (value) {
                       setState(() {
                         valorController.text = maskController.value.text;
-                        double numero = double.parse(valorController.text);
-                        valorEntrada = numero.toInt();
-                        editarEntradaController.getEditarEntrada(
-                            dataEntrada: "dataEntrada",
-                            idDescricaoEntrada: -1,
-                            valorEntrada: valorEntrada);
                       });
                     },
                     keyboardType: TextInputType.number,
@@ -158,6 +154,58 @@ class _EditarPageState extends State<EditarPage> {
                 ],
               ),
             ),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      idDescricaoEntrada = selectedItem.idDescricaoEntrada;
+                      editarEntradaController.getEditarEntrada(
+                          dataEntrada: "dataEntrada",
+                          idDescricaoEntrada: idDescricaoEntrada,
+                          valorEntrada: 0);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [Text("Buscar"), Text("Descrição")],
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      double numero = double.parse(valorController.text);
+                      valorEntrada = numero.toInt();
+                      editarEntradaController.getEditarEntrada(
+                          dataEntrada: "dataEntrada",
+                          idDescricaoEntrada: -1,
+                          valorEntrada: valorEntrada);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [Text("Buscar"), Text("Valor")],
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      editarEntradaController.getEditarEntrada(
+                          dataEntrada: f2.format(_dateTime).toString(),
+                          idDescricaoEntrada: -1,
+                          valorEntrada: 0);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [Text("Buscar"), Text("Data")],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Expanded(child: getDataTable())
           ],
         ),
@@ -201,7 +249,15 @@ class _EditarPageState extends State<EditarPage> {
                       DataCell(Text("R\$ ${e.valorEntrada.toString()}")),
                       DataCell(Row(
                         children: [
-                          IconButton(icon: Icon(Icons.edit), onPressed: () {}),
+                          IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (builder) =>
+                                            EditarEntradaDadosPage()));
+                              }),
                           IconButton(
                               icon: Icon(
                                 Icons.cancel,
@@ -281,19 +337,7 @@ class _EditarPageState extends State<EditarPage> {
                   .toList(),
               onChanged: (DescricaoEntrada value) {
                 setState(() {
-                  valorController.text = maskController.text;
-                  print(valorController.text);
-                  if (valorController.text != "0.00") {
-                    maskController.clear();
-                    maskController =
-                        new MoneyMaskedTextController(leftSymbol: "R\$ ");
-                  }
-
-                  idDescricaoEntrada = value.idDescricaoEntrada;
-                  editarEntradaController.getEditarEntrada(
-                      dataEntrada: "dataEntrada",
-                      idDescricaoEntrada: idDescricaoEntrada,
-                      valorEntrada: valorEntrada);
+                  selectedItem = value;
                 });
               },
             ),

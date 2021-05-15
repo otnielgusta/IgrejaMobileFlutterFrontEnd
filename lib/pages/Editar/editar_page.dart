@@ -7,6 +7,7 @@ import 'package:flutterigreja/controllers/states/descricao_entrada_state.dart';
 import 'package:flutterigreja/controllers/states/editar_entrada_state.dart';
 import 'package:flutterigreja/models/adicionar_entrada_model.dart';
 import 'package:flutterigreja/models/descricao_entrada_model.dart';
+import 'package:flutterigreja/models/editar_entrada_dados_model.dart';
 import 'package:flutterigreja/pages/Editar/editar_entrada_dados_page.dart';
 import 'package:intl/intl.dart';
 
@@ -29,13 +30,17 @@ class _EditarPageState extends State<EditarPage> {
 
   DescricaoEntrada selectedItem;
 
+  EditarEntradaDadosModel dadosEditar = new EditarEntradaDadosModel();
+
   AdicionarEntradaModel entradaModel = new AdicionarEntradaModel();
 
   final f = DateFormat("dd/MM/yyyy");
   final f2 = DateFormat("yyyy-MM-dd");
+  var teste = new MoneyMaskedTextController();
   var maskController = new MoneyMaskedTextController(leftSymbol: "R\$ ");
   var valorController = new MoneyMaskedTextController(
       decimalSeparator: '.', thousandSeparator: '');
+  var numberFormat = NumberFormat('###.0#');
 
   String _iconeCheck = "assets/images/check2.json";
 
@@ -252,11 +257,22 @@ class _EditarPageState extends State<EditarPage> {
                           IconButton(
                               icon: Icon(Icons.edit),
                               onPressed: () {
+                                dadosEditar.dataEntrada =
+                                    e.dataEntrada.toString();
+                                dadosEditar.idDescricaoEntrada =
+                                    e.idDescricaoEntrada;
+                                dadosEditar.idEntrada = e.idEntrada;
+
+                                dadosEditar.valorEntrada =
+                                    double.parse(e.valorEntrada).toDouble();
+                                print("Valor antes: " +
+                                    dadosEditar.valorEntrada.toString());
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (builder) =>
-                                            EditarEntradaDadosPage()));
+                                            EditarEntradaDadosPage(
+                                                dadosEditar: dadosEditar)));
                               }),
                           IconButton(
                               icon: Icon(

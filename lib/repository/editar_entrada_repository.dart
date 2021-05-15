@@ -28,10 +28,15 @@ class EditarEntradaRepository {
   Future<int> setEditarEntada({EditarEntradaDadosModel entradaEditar}) async {
     var dio = Dio();
 
-    final request = EditarEntradaDadosModel.fromMap(entradaEditar.toMap());
+    Map<String, dynamic> request = {
+      "id_descricao_entrada": entradaEditar.idDescricaoEntrada,
+      "data_entrada": entradaEditar.dataEntrada,
+      "valor_entrada": entradaEditar.valorEntrada,
+      "id_entrada": entradaEditar.idEntrada
+    };
 
     final response =
-        await dio.put("${UrlIgreja.url}/editar_entradas", data: request);
+        await dio.put("${UrlIgreja.url}/editar-entradas", data: request);
 
     return response.statusCode;
   }

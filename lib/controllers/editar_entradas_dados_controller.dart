@@ -6,7 +6,7 @@ import 'package:flutterigreja/models/editarEntrada/editar_entrada_model.dart';
 import 'package:flutterigreja/models/editar_entrada_dados_model.dart';
 import 'package:flutterigreja/repository/editar_entrada_repository.dart';
 
-class EditarEntradaController {
+class EditarEntradaDadosController {
   final stateNotifier =
       ValueNotifier<EditarEntradaDadosState>(EditarEntradaDadosState.empty);
 
@@ -20,5 +20,11 @@ class EditarEntradaController {
     this.state = EditarEntradaDadosState.loading;
     this.statusCode =
         await repository.setEditarEntada(entradaEditar: editarDados);
+
+    if (this.statusCode == 201) {
+      this.state = EditarEntradaDadosState.success;
+    } else {
+      this.state = EditarEntradaDadosState.error;
+    }
   }
 }

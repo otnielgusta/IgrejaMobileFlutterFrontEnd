@@ -4,6 +4,12 @@ class DescricaoEntrada {
 
   DescricaoEntrada({this.idDescricaoEntrada, this.nomeDescricaoEntrada});
 
+  int get hashCode => idDescricaoEntrada.hashCode;
+
+  bool operator ==(Object other) =>
+      other is DescricaoEntrada &&
+      other.idDescricaoEntrada == idDescricaoEntrada;
+
   DescricaoEntrada.fromJson(Map<String, dynamic> json) {
     idDescricaoEntrada = json['id_descricao_entrada'];
     nomeDescricaoEntrada = json['nome_descricao_entrada'];

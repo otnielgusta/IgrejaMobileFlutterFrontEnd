@@ -50,8 +50,10 @@ class _AdicionarEntradasState extends State<AdicionarEntradas> {
     entradaController.stateNotifier.addListener(() {
       setState(() {});
     });
+
     controller.getDescricaoEntrada();
     dataController.text = f.format(DateTime.now());
+    _dateTime = DateTime.now();
     controller.stateNotifier.addListener(() {
       setState(() {});
     });

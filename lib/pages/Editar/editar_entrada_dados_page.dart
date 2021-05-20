@@ -52,7 +52,7 @@ class _EditarEntradaDadosPageState extends State<EditarEntradaDadosPage> {
     editarEntradaController.stateNotifier.addListener(() {
       setState(() {});
     });
-    print("Valor depois: " + widget.dadosEditar.valorEntrada.toString());
+
     controller.getDescricaoEntrada();
     maskController.text =
         numberFormat.format(widget.dadosEditar.valorEntrada).toString();

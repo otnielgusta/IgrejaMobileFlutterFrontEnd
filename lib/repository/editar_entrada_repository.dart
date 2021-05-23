@@ -40,4 +40,12 @@ class EditarEntradaRepository {
 
     return response.statusCode;
   }
+
+  Future<int> deletaEntrada({int id}) async {
+    var dio = Dio();
+
+    final response = await dio.delete("${UrlIgreja.url}/editar-entradas/$id");
+
+    return response.statusCode;
+  }
 }

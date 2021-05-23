@@ -136,8 +136,6 @@ class _EditarEntradaDadosPageState extends State<EditarEntradaDadosPage> {
                     setState(() {
                       _dateTime = value;
                       dataController.text = f.format(_dateTime).toString();
-                      print(_dateTime);
-                      print(dataController.text);
                     });
                   });
                 },

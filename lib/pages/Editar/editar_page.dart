@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutterigreja/controllers/adicionar_entrada_controller.dart';
+import 'package:flutterigreja/controllers/deleta_entrada_controller.dart';
 import 'package:flutterigreja/controllers/descricao_entrada_controller.dart';
 import 'package:flutterigreja/controllers/editar_entradas_controller.dart';
+import 'package:flutterigreja/controllers/states/deleta_entrada_state.dart';
 import 'package:flutterigreja/controllers/states/descricao_entrada_state.dart';
 import 'package:flutterigreja/controllers/states/editar_entrada_state.dart';
 import 'package:flutterigreja/models/adicionar_entrada_model.dart';
@@ -10,6 +12,7 @@ import 'package:flutterigreja/models/descricao_entrada_model.dart';
 import 'package:flutterigreja/models/editar_entrada_dados_model.dart';
 import 'package:flutterigreja/pages/Editar/editar_entrada_dados_page.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../options_entrada.dart';
 
@@ -21,6 +24,7 @@ class EditarPage extends StatefulWidget {
 class _EditarPageState extends State<EditarPage> {
   final controller = DescricaoEntradaController();
   final editarEntradaController = EditarEntradaController();
+  final deletaEntradaController = DeletaEntradaController();
   final entradaController = AdicionarEntradaController();
   int _serverStatus;
 
@@ -72,6 +76,10 @@ class _EditarPageState extends State<EditarPage> {
     controller.getDescricaoEntrada();
     dataController.text = f.format(DateTime.now());
     controller.stateNotifier.addListener(() {
+      setState(() {});
+    });
+
+    deletaEntradaController.stateNotifier.addListener(() {
       setState(() {});
     });
   }
@@ -256,7 +264,7 @@ class _EditarPageState extends State<EditarPage> {
                         children: [
                           IconButton(
                               icon: Icon(Icons.edit),
-                              onPressed: () {
+                              onPressed: () async {
                                 dadosEditar.dataEntrada =
                                     e.dataEntrada.toString();
                                 dadosEditar.idDescricaoEntrada =
@@ -265,21 +273,37 @@ class _EditarPageState extends State<EditarPage> {
 
                                 dadosEditar.valorEntrada =
                                     double.parse(e.valorEntrada).toDouble();
-                                print("Valor antes: " +
-                                    dadosEditar.valorEntrada.toString());
-                                Navigator.push(
+
+                                await Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (builder) =>
                                             EditarEntradaDadosPage(
                                                 dadosEditar: dadosEditar)));
+                                editarEntradaController.getEditarEntrada();
                               }),
                           IconButton(
                               icon: Icon(
                                 Icons.cancel,
                                 color: Colors.red,
                               ),
-                              onPressed: () {})
+                              onPressed: () async {
+                                await deletaEntradaController.deletaEntrada(
+                                    id: e.idEntrada);
+                                setState(() {
+                                  if (deletaEntradaController.state ==
+                                      DeletaEntradaState.success) {
+                                    showAlertDialog(
+                                        context: context, icone: _iconeCheck);
+                                    editarEntradaController.getEditarEntrada();
+                                  } else if (deletaEntradaController.state ==
+                                      DeletaEntradaState.error) {
+                                    showAlertDialog(
+                                        context: context, icone: _iconeError);
+                                  }
+                                  maskController.updateValue(0);
+                                });
+                              })
                         ],
                       ))
                     ]))
@@ -393,5 +417,25 @@ class _EditarPageState extends State<EditarPage> {
         ),
       );
     }
+  }
+
+  showAlertDialog({@required BuildContext context, @required String icone}) {
+    // set up the button
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: Lottie.asset(icone),
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        Future.delayed(Duration(seconds: 1, microseconds: 500), () {
+          Navigator.of(context).pop(true);
+        });
+        return alert;
+      },
+    );
   }
 }
